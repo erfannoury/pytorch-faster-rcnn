@@ -54,6 +54,15 @@ class alexnet(Network):
         return fc7
 
     def load_pretrained_cnn(self, state_dict):
+        if 'state_dict' in state_dict:
+            state_dict = state_dict['state_dict']
+
+        new_state = {}
+        for k, v in state_dict.items():
+            if 'features' in k:
+                k = k.replace('module.', '')
+            new_state[k] = v
+
         self.alexnet.load_state_dict(
-            {k: v for k, v in state_dict.items()
+            {k: v for k, v in new_state.items()
              if k in self.alexnet.state_dict()})
