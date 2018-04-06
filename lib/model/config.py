@@ -251,6 +251,14 @@ __C.MOBILENET.DEPTH_MULTIPLIER = 1.
 # they were trained with
 __C.PIXEL_MEANS = np.array([[[102.9801, 115.9465, 122.7717]]])
 
+# Pixel std values (BGR order) as a (1, 1, 3) array
+__C.PIXEL_STDS = np.array([[[1.0, 1.0, 1.0]]])
+
+# Image channel ordering. Since this code uses OpenCV to read and process
+# images, they are in BGR order. However, the PyTorch model was trained on
+# images read using PIL and are therefore in 'RGB' order
+__C.CHANNEL_ORDER = 'BGR'
+
 # For reproducibility
 __C.RNG_SEED = 3
 
