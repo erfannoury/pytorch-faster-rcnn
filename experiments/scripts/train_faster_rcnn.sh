@@ -68,7 +68,7 @@ if [ ! -f ${NET_FINAL}.index ]; then
       --tag ${EXTRA_ARGS_SLUG} \
       --net ${NET} \
       --set ANCHOR_SCALES ${ANCHORS} ANCHOR_RATIOS ${RATIOS} \
-      TRAIN.STEPSIZE ${STEPSIZE} ${EXTRA_ARGS}
+      ${EXTRA_ARGS}
   else
     CUDA_VISIBLE_DEVICES=${GPU_ID} time python ./tools/trainval_net.py \
       --weight data/imagenet_weights/${NET}.pth \
@@ -78,7 +78,7 @@ if [ ! -f ${NET_FINAL}.index ]; then
       --cfg experiments/cfgs/${NET}.yml \
       --net ${NET} \
       --set ANCHOR_SCALES ${ANCHORS} ANCHOR_RATIOS ${RATIOS} \
-      TRAIN.STEPSIZE ${STEPSIZE} ${EXTRA_ARGS}
+      ${EXTRA_ARGS}
   fi
 fi
 
