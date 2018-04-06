@@ -31,9 +31,11 @@ def im_list_to_blob(ims):
 
 
 def prep_im_for_blob(im, pixel_means, pixels_stds, channel_order,
-                     target_size, max_size):
+                     max_pixel_range, target_size, max_size):
     """Mean subtract and scale an image for use in a blob."""
     im = im.astype(np.float32, copy=False)
+    if max_pixel_range == 1:
+        im /= 255.0
     im -= pixel_means
     im /= pixels_stds
     im_shape = im.shape

@@ -259,6 +259,11 @@ __C.PIXEL_STDS = np.array([[[1.0, 1.0, 1.0]]])
 # images read using PIL and are therefore in 'RGB' order
 __C.CHANNEL_ORDER = 'BGR'
 
+# Maximum value of the range for pixel values. The default is to have images
+# in the range [0, 255]. However, the PyTorch models expect them to be in the
+# range [0, 1]
+__C.PIXEL_MAX_RANGE = 255
+
 # For reproducibility
 __C.RNG_SEED = 3
 
