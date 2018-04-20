@@ -1,12 +1,10 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import os
 import os.path as osp
+
+
 import numpy as np
-# `pip install easydict` if you don't have it
 from easydict import EasyDict as edict
+
 
 __C = edict()
 # Consumers can get config by:
@@ -33,7 +31,8 @@ __C.TRAIN.GAMMA = 0.1
 # Step size for reducing the learning rate, currently only support one step
 __C.TRAIN.STEPSIZE = [30000]
 
-# Iteration intervals for showing the loss during training, on command line interface
+# Iteration intervals for showing the loss during training, on command line
+# interface
 __C.TRAIN.DISPLAY = 10
 
 # Whether to double the learning rate for bias
@@ -48,8 +47,8 @@ __C.TRAIN.BIAS_DECAY = False
 # Whether to add ground truth boxes to the pool when sampling regions
 __C.TRAIN.USE_GT = False
 
-# Whether to use aspect-ratio grouping of training images, introduced merely for saving
-# GPU memory
+# Whether to use aspect-ratio grouping of training images, introduced merely
+# for saving GPU memory
 __C.TRAIN.ASPECT_GROUPING = False
 
 # The number of snapshots kept, older ones are deleted to save space
@@ -156,7 +155,8 @@ __C.TRAIN.RPN_BBOX_INSIDE_WEIGHTS = (1.0, 1.0, 1.0, 1.0)
 __C.TRAIN.RPN_POSITIVE_WEIGHT = -1.0
 
 # Whether to use all ground truth bounding boxes for training,
-# For COCO, setting USE_ALL_GT to False will exclude boxes that are flagged as ''iscrowd''
+# For COCO, setting USE_ALL_GT to False will exclude boxes that are flagged as
+# ''iscrowd''
 __C.TRAIN.USE_ALL_GT = True
 
 #
@@ -197,14 +197,16 @@ __C.TEST.RPN_PRE_NMS_TOP_N = 6000
 # Number of top scoring boxes to keep after applying NMS to RPN proposals
 __C.TEST.RPN_POST_NMS_TOP_N = 300
 
-# Proposal height and width both need to be greater than RPN_MIN_SIZE (at orig image scale)
+# Proposal height and width both need to be greater than RPN_MIN_SIZE (at orig
+# image scale)
 # __C.TEST.RPN_MIN_SIZE = 16
 
 # Testing mode, default to be 'nms', 'top' is slower but better
 # See report for details
 __C.TEST.MODE = 'nms'
 
-# Only useful when TEST.MODE is 'top', specifies the number of top proposals to select
+# Only useful when TEST.MODE is 'top', specifies the number of top proposals
+# to select
 __C.TEST.RPN_TOP_N = 5000
 
 #
@@ -219,7 +221,8 @@ __C.RESNET = edict()
 # resized to a square of POOLING_SIZE
 __C.RESNET.MAX_POOL = False
 
-# Number of fixed blocks during training, by default the first of all 4 blocks is fixed
+# Number of fixed blocks during training, by default the first of all 4 blocks
+# is fixed
 # Range: 0 (none) to 3 (all)
 __C.RESNET.FIXED_BLOCKS = 1
 
@@ -232,7 +235,8 @@ __C.MOBILENET = edict()
 # Whether to regularize the depth-wise filters during training
 __C.MOBILENET.REGU_DEPTH = False
 
-# Number of fixed layers during training, by default the bottom 5 of 14 layers is fixed
+# Number of fixed layers during training, by default the bottom 5 of 14 layers
+# is fixed
 # Range: 0 (none) to 12 (all)
 __C.MOBILENET.FIXED_LAYERS = 5
 
@@ -298,7 +302,7 @@ __C.ANCHOR_RATIOS = [0.5, 1, 2]
 __C.RPN_CHANNELS = 512
 
 
-def get_output_dir(imdb, weights_filename):
+def get_output_dir(imdb, foldername_postfix):
     """Return the directory where experimental artifacts are placed.
     If the directory does not exist, it is created.
 
@@ -307,15 +311,15 @@ def get_output_dir(imdb, weights_filename):
     """
     outdir = osp.abspath(
         osp.join(__C.ROOT_DIR, 'output', __C.EXP_DIR, imdb.name))
-    if weights_filename is None:
-        weights_filename = 'default'
-    outdir = osp.join(outdir, weights_filename)
+    if foldername_postfix is None:
+        foldername_postfix = 'default'
+    outdir = osp.join(outdir, foldername_postfix)
     if not os.path.exists(outdir):
         os.makedirs(outdir)
     return outdir
 
 
-def get_output_tb_dir(imdb, weights_filename):
+def get_output_tb_dir(imdb, foldername_postfix):
     """Return the directory where tensorflow summaries are placed.
     If the directory does not exist, it is created.
 
@@ -324,9 +328,9 @@ def get_output_tb_dir(imdb, weights_filename):
     """
     outdir = osp.abspath(
         osp.join(__C.ROOT_DIR, 'tensorboard', __C.EXP_DIR, imdb.name))
-    if weights_filename is None:
-        weights_filename = 'default'
-    outdir = osp.join(outdir, weights_filename)
+    if foldername_postfix is None:
+        foldername_postfix = 'default'
+    outdir = osp.join(outdir, foldername_postfix)
     if not os.path.exists(outdir):
         os.makedirs(outdir)
     return outdir
