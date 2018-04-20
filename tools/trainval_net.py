@@ -3,24 +3,27 @@
 # Licensed under The MIT License [see LICENSE for details]
 # Written by Zheqi He, Xinlei Chen, based on code from Ross Girshick
 # --------------------------------------------------------
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+import argparse
+import sys
+import json
+import os
+
+
+import numpy as np
+import pprint
+
 
 import _init_paths
 from model.train_val import get_training_roidb, train_net
-from model.config import cfg, cfg_from_file, cfg_from_list, get_output_dir, get_output_tb_dir
+from model.config import cfg, cfg_from_file, cfg_from_list, get_output_dir, \
+    get_output_tb_dir
 from datasets.factory import get_imdb
 import datasets.imdb
-import argparse
-import pprint
-import numpy as np
-import sys
+import nets
 
-from nets.vgg16 import vgg16
-from nets.resnet_v1 import resnetv1
-from nets.mobilenet_v1 import mobilenetv1
-from nets.alexnet import alexnet
+
+ARCHITECTURES = ['vgg16', 'res50', 'res101', 'res152', 'mobile',
+                 'alexnet']
 
 
 def parse_args():
@@ -46,7 +49,7 @@ def parse_args():
     parser.add_argument('--tag', dest='tag',
                         help='tag of the model',
                         default=None, type=str)
-    parser.add_argument('--net', dest='net',
+    parser.add_argument('--net', dest='net', choices=ARCHITECTURES,
                         help='alexnet, vgg16, res50, res101, res152, mobile',
                         default='res50', type=str)
     parser.add_argument('--set', dest='set_cfgs',
@@ -92,10 +95,10 @@ if __name__ == '__main__':
     print('Called with args:')
     print(args)
 
-    if args.cfg_file is not None:
-        cfg_from_file(args.cfg_file)
     if args.set_cfgs is not None:
         cfg_from_list(args.set_cfgs)
+    if args.cfg_file is not None:
+        cfg_from_file(args.cfg_file)
 
     print('Using config:')
     pprint.pprint(cfg)
@@ -110,6 +113,9 @@ if __name__ == '__main__':
     output_dir = get_output_dir(imdb, args.tag)
     print('Output will be saved to `{:s}`'.format(output_dir))
 
+    # Save config in the output_dir
+    json.dump(cfg, open(os.path.join(output_dir, 'config.json'), 'w'))
+
     # tensorboard directory where the summaries are saved during training
     tb_dir = get_output_tb_dir(imdb, args.tag)
     print('TensorFlow summaries will be saved to `{:s}`'.format(tb_dir))
@@ -123,17 +129,17 @@ if __name__ == '__main__':
 
     # load network
     if args.net == 'alexnet':
-        net = alexnet()
+        net = nets.alexnet()
     elif args.net == 'vgg16':
-        net = vgg16()
+        net = nets.vgg16()
     elif args.net == 'res50':
-        net = resnetv1(num_layers=50)
+        net = nets.resnetv1(num_layers=50)
     elif args.net == 'res101':
-        net = resnetv1(num_layers=101)
+        net = nets.resnetv1(num_layers=101)
     elif args.net == 'res152':
-        net = resnetv1(num_layers=152)
+        net = nets.resnetv1(num_layers=152)
     elif args.net == 'mobile':
-        net = mobilenetv1()
+        net = nets.mobilenetv1()
     else:
         raise NotImplementedError
 
