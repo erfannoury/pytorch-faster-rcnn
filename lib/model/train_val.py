@@ -3,25 +3,23 @@
 # Licensed under The MIT License [see LICENSE for details]
 # Written by Xinlei Chen and Zheqi He
 # --------------------------------------------------------
+import pickle
+import os
+import sys
+import glob
+import time
+
+
 import tensorboardX as tb
+import torch
+import torch.optim as optim
+import numpy as np
+
 
 from model.config import cfg
 import roi_data_layer.roidb as rdl_roidb
 from roi_data_layer.layer import RoIDataLayer
 import utils.timer
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
-
-import torch
-import torch.optim as optim
-
-import numpy as np
-import os
-import sys
-import glob
-import time
 
 
 def scale_lr(optimizer, scale):
@@ -131,8 +129,8 @@ class SolverWrapper(object):
                     params += [{'params': [value], 'lr':lr * (
                         cfg.TRAIN.DOUBLE_BIAS + 1),
                         'weight_decay':
-                            (cfg.TRAIN.BIAS_DECAY and cfg.TRAIN.WEIGHT_DECAY
-                             or 0)}]
+                            (cfg.TRAIN.BIAS_DECAY and
+                             cfg.TRAIN.WEIGHT_DECAY or 0)}]
                 else:
                     params += [{'params': [value], 'lr':lr,
                                 'weight_decay': cfg.TRAIN.WEIGHT_DECAY}]
@@ -267,8 +265,10 @@ class SolverWrapper(object):
             if (iter == 1 or
                 now - last_summary_time > cfg.TRAIN.SUMMARY_INTERVAL):
                 # Compute the graph with summary
-                rpn_loss_cls, rpn_loss_box, loss_cls, loss_box, total_loss, summary = \
-                    self.net.train_step_with_summary(blobs, self.optimizer)
+                rpn_loss_cls, rpn_loss_box, loss_cls, loss_box, total_loss,\
+                    summary = self.net.train_step_with_summary(
+                        blobs,
+                        self.optimizer)
                 for _sum in summary:
                     self.writer.add_summary(_sum, float(iter))
                 # Also check the summary on the validation set
@@ -285,11 +285,14 @@ class SolverWrapper(object):
 
             # Display training information
             if iter % (cfg.TRAIN.DISPLAY) == 0:
-                print('iter: %d / %d, total loss: %.6f\n >>> rpn_loss_cls: %.6f\n '
-                      '>>> rpn_loss_box: %.6f\n >>> loss_cls: %.6f\n >>> loss_box: %.6f\n >>> lr: %f' %
-                      (iter, max_iters, total_loss, rpn_loss_cls, rpn_loss_box, loss_cls, loss_box, lr))
+                print('iter: %d / %d, total loss: %.6f\n >>> rpn_loss_cls: '
+                      '%.6f\n >>> rpn_loss_box: %.6f\n >>> loss_cls: %.6f\n '
+                      '>>> loss_box: %.6f\n >>> lr: %f' %
+                      (iter, max_iters, total_loss, rpn_loss_cls,
+                       rpn_loss_box, loss_cls, loss_box, lr))
                 print(
-                    'speed: {:.3f}s / iter'.format(utils.timer.timer.average_time()))
+                    'speed: {:.3f}s / iter'.format(
+                        utils.timer.timer.average_time()))
 
                 # for k in utils.timer.timer._average_time.keys():
                 #   print(k, utils.timer.timer.average_time(k))
