@@ -33,6 +33,8 @@ def im_list_to_blob(ims):
 def prep_im_for_blob(im, pixel_means, pixels_stds, channel_order,
                      max_pixel_range, target_size, max_size):
     """Mean subtract and scale an image for use in a blob."""
+    pixel_means = np.asarray(pixel_means).reshape((1, 1, 3)).astype(np.float32)
+    pixels_stds = np.asarray(pixels_stds).reshape((1, 1, 3)).astype(np.float32)
     im = im.astype(np.float32, copy=False)
     if max_pixel_range == 1:
         im /= 255.0
