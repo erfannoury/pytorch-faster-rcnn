@@ -19,7 +19,10 @@ from model.train_val import get_training_roidb, train_net
 from model.config import cfg, cfg_from_file, cfg_from_list, get_output_dir, \
     get_output_tb_dir
 import datasets.imdb
-import nets
+from nets.vgg16 import vgg16
+from nets.resnet_v1 import resnetv1
+from nets.mobilenet_v1 import mobilenetv1
+from nets.alexnet import alexnet
 
 
 ARCHITECTURES = ['vgg16', 'res50', 'res101', 'res152', 'mobile',
@@ -129,17 +132,17 @@ if __name__ == '__main__':
 
     # load network
     if args.net == 'alexnet':
-        net = nets.alexnet()
+        net = alexnet()
     elif args.net == 'vgg16':
-        net = nets.vgg16()
+        net = vgg16()
     elif args.net == 'res50':
-        net = nets.resnetv1(num_layers=50)
+        net = resnetv1(num_layers=50)
     elif args.net == 'res101':
-        net = nets.resnetv1(num_layers=101)
+        net = resnetv1(num_layers=101)
     elif args.net == 'res152':
-        net = nets.resnetv1(num_layers=152)
+        net = resnetv1(num_layers=152)
     elif args.net == 'mobile':
-        net = nets.mobilenetv1()
+        net = mobilenetv1()
     else:
         raise NotImplementedError
 
