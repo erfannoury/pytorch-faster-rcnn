@@ -253,10 +253,10 @@ __C.MOBILENET.DEPTH_MULTIPLIER = 1.
 # Pixel mean values (BGR order) as a (1, 1, 3) array
 # We use the same pixel mean for all networks even though it's not exactly what
 # they were trained with
-__C.PIXEL_MEANS = np.array([[[102.9801, 115.9465, 122.7717]]])
+__C.PIXEL_MEANS = [102.9801, 115.9465, 122.7717]
 
 # Pixel std values (BGR order) as a (1, 1, 3) array
-__C.PIXEL_STDS = np.array([[[1.0, 1.0, 1.0]]])
+__C.PIXEL_STDS = [1.0, 1.0, 1.0]
 
 # Image channel ordering. Since this code uses OpenCV to read and process
 # images, they are in BGR order. However, the PyTorch model was trained on
