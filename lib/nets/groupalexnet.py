@@ -164,6 +164,6 @@ class groupalexnet(Network):
                 new_state[f'features.conv{idx+1}.{name}'] = \
                     torch.from_numpy(w).cuda()
 
-        self.alexnet.load_state_dict(
-            {k: v for k, v in new_state.items()
-             if k in self.alexnet.state_dict()})
+        current_state_dict = self.alexnet.state_dict()
+        current_state_dict.update(new_state)
+        self.alexnet.load_state_dict(current_state_dict)
