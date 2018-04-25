@@ -113,7 +113,7 @@ class TorchAlexNetWithGrouping(nn.Module):
         return x
 
 
-class alexnet(Network):
+class groupalexnet(Network):
     def __init__(self):
         Network.__init__(self)
         self._feat_stride = [16, ]
