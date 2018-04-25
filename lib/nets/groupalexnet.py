@@ -164,10 +164,11 @@ class groupalexnet(Network):
                 new_state[f'features.conv{idx+1}.{name}'] = \
                     torch.from_numpy(w).cuda()
         if cfg.GROUPALEXNET.LOAD_FC:
+            idx2newidx = {0:1, 1: 4}
             for idx, i in enumerate([16, 19]):
                 for name in ['weight', 'bias']:
                     w = np.array(state_dict[f'{i}.1.{name}'])
-                    new_state[f'classifier.fc{idx+6}.{name}'] = \
+                    new_state[f'classifier.{idx2newidx[idx]}.{name}'] = \
                         torch.from_numpy(w).cuda()
 
         current_state_dict = self.alexnet.state_dict()
