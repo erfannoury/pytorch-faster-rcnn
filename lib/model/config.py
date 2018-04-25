@@ -219,6 +219,9 @@ __C.GROUPALEXNET = edict()
 # and fully-connected layers
 __C.GROUPALEXNET.ADD_BN = False
 
+# Option to load fc weights from the pretrained weight file
+__C.GROUPALEXNET.LOAD_FC = True
+
 #
 # ResNet options
 #
