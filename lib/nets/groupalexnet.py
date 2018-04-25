@@ -3,6 +3,9 @@
 # Licensed under The MIT License [see LICENSE for details]
 # Written by Xinlei Chen
 # --------------------------------------------------------
+from collections import OrderedDict
+
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
