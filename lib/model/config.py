@@ -210,6 +210,16 @@ __C.TEST.MODE = 'nms'
 __C.TEST.RPN_TOP_N = 5000
 
 #
+# GroupAlexNet options
+#
+
+__C.GROUPALEXNET = edict()
+
+# Option to add additional batch normalization after all the convolutional
+# and fully-connected layers
+__C.GROUPALEXNET.ADD_BN = False
+
+#
 # ResNet options
 #
 
