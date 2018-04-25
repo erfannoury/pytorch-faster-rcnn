@@ -21,6 +21,7 @@ from nets.vgg16 import vgg16
 from nets.resnet_v1 import resnetv1
 from nets.mobilenet_v1 import mobilenetv1
 from nets.alexnet import alexnet
+from nets.groupalexnet import groupalexnet
 
 import torch
 
@@ -92,6 +93,8 @@ if __name__ == '__main__':
     # load network
     if args.net == 'alexnet':
         net = alexnet()
+    elif args.net == 'groupalexnet':
+        net = groupalexnet()
     elif args.net == 'vgg16':
         net = vgg16()
     elif args.net == 'res50':
